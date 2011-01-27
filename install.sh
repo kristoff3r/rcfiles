@@ -5,8 +5,8 @@ DIR=`pwd`
 echo Installing vim config...
 ln -fs $DIR/vimrc $HOME/.vimrc
 ln -fs $DIR/vim $HOME/.vim
-mkdir -p /var/tmp/vim-sebbe/swap
-mkdir -p /var/tmp/vim-sebbe/undo
+mkdir -p /var/tmp/vim-kris/swap
+mkdir -p /var/tmp/vim-kris/undo
 
 echo Installing zsh config...
 ln -fs $DIR/zshcomplete $HOME/.zshcomplete
@@ -23,6 +23,10 @@ ln -fs $DIR/screenrc $HOME/.screenrc
 
 echo Installing irssi config...
 ln -fs $DIR/irssi $HOME/.irssi
+
+echo Installing xmonad config...
+ln -fs $DIR/xmonad $HOME/.xmonad
+
 
 echo All done!
 

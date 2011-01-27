@@ -123,7 +123,7 @@ set formatprg=par\ -w78
 " persistent undo
 if exists("+undofile")
     set undofile
-    set undodir=/var/tmp/vim-sebbe/undo
+    set undodir=/var/tmp/vim-kris/undo
 endif
 "}}}
 " Make vim less whiny {{{
@@ -176,8 +176,8 @@ set foldmethod=marker
 set foldclose=all
 "}}}
 " Swap files {{{
-set backupdir=/var/tmp/vim-sebbe/swap
-set directory=/var/tmp/vim-sebbe/swap
+set backupdir=/var/tmp/vim-kris/swap
+set directory=/var/tmp/vim-kris/swap
 " }}}
 "}}}
 " Colors {{{
