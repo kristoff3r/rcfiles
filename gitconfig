@@ -1,6 +1,6 @@
 [user]
-	email = Eckankar+github@gmail.com
-    name = Sebastian Paaske Tørholm
+	email = k.soeholm@gmail.com
+    name = Kristoffer Søholm
 [color]
 	ui = auto
 [core]
@@ -10,6 +10,6 @@
 [mergetool "kdiff3"]
     keepBackup = false
 [github]
-    user = Eckankar
+    user = kristoff3r
 [push]
     default = current
