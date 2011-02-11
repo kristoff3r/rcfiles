@@ -82,3 +82,7 @@ bindkey '^[OF' end-of-line
 # History search on ^R
 bindkey '^R' history-incremental-search-backward
 # }}}
+# utilities {{{
+# Loads the autojump program
+.  /usr/share/autojump/autojump.zsh
+# # }}}
