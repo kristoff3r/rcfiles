@@ -1,0 +1,12 @@
+Config { font = "-*-*-*-*-*-*-12-*-*-*-*-*-iso8859-*"
+       , bgColor = "#1a1a1a"
+       , fgColor = "#ffffff"
+       , position = Top
+       , lowerOnStart = True
+       , commands = [ Run StdinReader
+                    , Run Com "date" ["+%a\\\\ %d\\\\ %b\\\\ %T"] "" 1 ]
+       , sepChar = "%"
+       , alignSep = "}{"
+       , template = "%StdinReader% }{ %date%"
+       }
+

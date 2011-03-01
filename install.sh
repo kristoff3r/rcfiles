@@ -26,6 +26,7 @@ ln -fs $DIR/irssi $HOME/.irssi
 
 echo Installing xmonad config...
 ln -fs $DIR/xmonad $HOME/.xmonad
+ln -fs $DIR/xmobarrc $HOME/.xmobarrc
 
 echo Installing xbindkeys config...
 ln -fs $DIR/xbindkeysrc $HOME/.xbindkeysrc

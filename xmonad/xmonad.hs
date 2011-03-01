@@ -12,18 +12,20 @@ import XMonad.Layout.Accordion
 import XMonad.Layout.NoBorders
 import XMonad.Layout
 import System.IO
+import System.Posix.Unistd
 
-statusBarCmd= "dzen2 -bg '#1a1a1a' -fg '#ffffff' -h 12 -w 480 -sa c -e '' -ta l -fn -*-*-*-*-*-*-12-*-*-*-*-*-iso10646-1"
+statusBarCmd= "xmobar"
 dmenuCmd= "dmenu_run -nb '#1a1a1a' -nf '#ffffff' -sb '#aecf96' -sf black -p '>'"
 
 
 main = do din <- spawnPipe statusBarCmd
+          sleep 2
           xmonad $ defaultConfig
 
 	               { manageHook         = myManageHook <+> manageDocks <+> manageHook defaultConfig
                    , layoutHook         = smartBorders (myLayout)
                    , keys               = myKeys
-	               , workspaces         = map show [0 .. 8 :: Int] ++ ["files", "torrent", "music", "IRC", "chat"]
+	               , workspaces         = map show ["§"] ++ [1 .. 8 :: Int] ++ ["9-files", "0-torrent", "+-music", "|-IRC", "chat"]
                    , logHook            = dynamicLogWithPP $ myPP din
                    , modMask            = mod4Mask     -- Rebind Mod to the Windows key
                    , normalBorderColor  = "#555555"
@@ -57,15 +59,12 @@ myLayout = avoidStruts (tiled ||| Mirror tiled ||| Full)
     ratio   = 1/2
     delta   = 3/100
 
--- Pretty print for dzen
+-- Pretty print for xmobar
 myPP h = defaultPP
-                 { ppCurrent = dzenColor "black" "#aecf96" . dropNumbers
-				 , ppHidden  = dzenColor "" "" . dropNumbers
-				 , ppSep     = " ^r(3x3) "
-				 -- Replace layout name with an icon:
-			 	 , ppTitle   = dzenColor "aecf96" ""
-				 , ppOutput  = hPutStrLn h
-				 }
+                { ppCurrent = xmobarColor "black" "#aecf96"
+                , ppSep     = " | "
+                , ppOutput  = hPutStrLn h
+                }
 
 -- Keys
 myKeys :: XConfig Layout -> M.Map (KeyMask, KeySym) (X ())
