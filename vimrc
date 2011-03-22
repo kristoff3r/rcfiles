@@ -312,7 +312,7 @@ let g:Foldtext_perl_enable = 1
 let python_highlight_all = 1
 " }}}
 " CTAGS {{{
-set tags=tags;/
+set tags=./tags,./../tags,./../../tags,./../../../tags,tags
 " }}} 
 " }}}
 " icfp {{{
