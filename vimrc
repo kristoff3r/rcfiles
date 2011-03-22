@@ -311,6 +311,9 @@ let g:Foldtext_perl_enable = 1
 " Python highlighting {{{
 let python_highlight_all = 1
 " }}}
+" CTAGS {{{
+set tags=tags;/
+" }}} 
 " }}}
 " icfp {{{
 au BufNewFile,BufReadPost *.asl set ft=ruby
