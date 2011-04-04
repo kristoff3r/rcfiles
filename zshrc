@@ -74,13 +74,22 @@ fi
 bindkey -v
 
 # Fix a few keys in putty
-bindkey '^[OD' beginning-of-line
+bindkey '^[OH' beginning-of-line
 bindkey '^[[2~' overwrite-mode
 bindkey '^[[3~' delete-char
 bindkey '^[OF' end-of-line
 
 # History search on ^R
 bindkey '^R' history-incremental-search-backward
+
+# History binds
+bindkey '^[[A' up-history
+bindkey '^[[B' down-history
+
+# Word jump
+bindkey '^[[1;5D' backward-word
+bindkey '^[[1;5C' forward-word
+
 # }}}
 # utilities {{{
 # Loads the autojump program
