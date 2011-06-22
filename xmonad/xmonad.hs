@@ -25,7 +25,7 @@ main = do din <- spawnPipe statusBarCmd
 	               { manageHook         = myManageHook <+> manageDocks <+> manageHook defaultConfig
                    , layoutHook         = smartBorders (myLayout)
                    , keys               = myKeys
-	               , workspaces         = map show ["§"] ++ [1 .. 8 :: String] ++ ["9-files", "0-torrent", "+-music", "|-IRC", "chat"]
+	               , workspaces         = myWorkspaces
                    , logHook            = dynamicLogWithPP $ myPP din
                    , modMask            = mod4Mask     -- Rebind Mod to the Windows key
                    , normalBorderColor  = "#555555"
@@ -45,6 +45,9 @@ myManageHook = composeAll
     , className =? "irssi" --> doShift "IRC"
     , isFullscreen --> doFullFloat]
 
+-- Workspaces
+myWorkspaces :: [WorkspaceId]
+myWorkspaces = map show ["§:web","1:term","2:code","3:pdf","4","5","6","7","8","9:files", "0:torrent", "+:music", "|:IRC", "<-:chat"]
 
 -- DropNumbers removes the number if a workspace is named, i:name -> name
 dropNumbers wsId =  if (':' `elem` wsId)
