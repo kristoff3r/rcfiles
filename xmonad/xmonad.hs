@@ -37,17 +37,18 @@ main = do din <- spawnPipe statusBarCmd
 -- ManageHooks
 myManageHook :: ManageHook
 myManageHook = composeAll
-    [ className =? "Pidgin" --> doShift "chat"
-    , className =? "Quodlibet" --> doShift "music"
-    , className =? "Transmission" --> doShift "torrent"
-    , className =? "Nautilus" --> doShift "files"
+    [ className =? "Pidgin" --> doShift "<-:chat"
+    , className =? "chrome" --> doShift "§:web"
+    , className =? "Quodlibet" --> doShift "+:music"
+    , className =? "Transmission" --> doShift "0:torrent"
+    , className =? "Nautilus" --> doShift "9:files"
     , className =? "Wine" --> doFloat
-    , className =? "irssi" --> doShift "IRC"
+    , className =? "irssi" --> doShift "|:IRC"
     , isFullscreen --> doFullFloat]
 
 -- Workspaces
 myWorkspaces :: [WorkspaceId]
-myWorkspaces = map show ["§:web","1:term","2:code","3:pdf","4","5","6","7","8","9:files", "0:torrent", "+:music", "|:IRC", "<-:chat"]
+myWorkspaces = ["§:web","1:term","2:code","3:pdf","4","5","6","7","8","9:files", "0:torrent", "+:music", "|:IRC", "<-:chat"]
 
 -- DropNumbers removes the number if a workspace is named, i:name -> name
 dropNumbers wsId =  if (':' `elem` wsId)
