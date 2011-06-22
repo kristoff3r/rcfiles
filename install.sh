@@ -3,33 +3,35 @@
 DIR=`pwd`
 
 echo Installing vim config...
-ln -fs $DIR/vimrc $HOME/.vimrc
-ln -fs $DIR/vim $HOME/.vim
+ln -Tfs $DIR/vimrc $HOME/.vimrc
+ln -Tfs $DIR/vim/ $HOME/.vim
 mkdir -p /var/tmp/vim-kris/swap
 mkdir -p /var/tmp/vim-kris/undo
 
 echo Installing zsh config...
-ln -fs $DIR/zshcomplete $HOME/.zshcomplete
-ln -fs $DIR/zshrc $HOME/.zshrc
-ln -fs $DIR/zshenv $HOME/.zshenv
+ln -Tfs $DIR/zshcomplete $HOME/.zshcomplete
+ln -Tfs $DIR/zshrc $HOME/.zshrc
+ln -Tfs $DIR/zshenv $HOME/.zshenv
 echo Setting default shell to zsh...
 chsh -s `which zsh`
 
 echo Installing git config...
-ln -fs $DIR/gitconfig $HOME/.gitconfig
+ln -Tfs $DIR/gitconfig $HOME/.gitconfig
 
 echo Installing screen config...
-ln -fs $DIR/screenrc $HOME/.screenrc
+ln -Tfs $DIR/screenrc $HOME/.screenrc
 
 echo Installing irssi config...
-ln -fs $DIR/irssi $HOME/.irssi
+ln -Tfs $DIR/irssi $HOME/.irssi
 
 echo Installing xmonad config...
-ln -fs $DIR/xmonad $HOME/.xmonad
-ln -fs $DIR/xmobarrc $HOME/.xmobarrc
+ln -Tfs $DIR/xmonad/ $HOME/.xmonad
+ln -Tfs $DIR/xmobarrc $HOME/.xmobarrc
 
 echo Installing xbindkeys config...
-ln -fs $DIR/xbindkeysrc $HOME/.xbindkeysrc
+ln -Tfs $DIR/xbindkeysrc $HOME/.xbindkeysrc
+ln -Tfs $DIR/xmodmap $HOME/.xmodmap
+
 
 echo All done!
 

@@ -104,28 +104,17 @@ chatnets = {
   };
   SILC = { type = "SILC"; };
   Ubuntu = { type = "IRC"; };
-  freenode = { type = "IRC"; nick = "Sebbe"; };
-  SynIRC = { type = "IRC"; nick = "Sebbe"; };
-  PSIGenix = { type = "IRC"; nick = "Sebbe"; };
-  QuickFox = { type = "IRC"; nick = "Sebbe"; };
+  freenode = { type = "IRC"; nick = "kristoff3r"; };
+  SynIRC = { type = "IRC"; nick = "kristoff3r"; };
+  PSIGenix = { type = "IRC"; nick = "kristoff3r"; };
+  QuickFox = { type = "IRC"; nick = "kristoff3r"; };
+  QuakeNet = { type = "IRC"; nick = "[R]gravityy" };
 };
 
 channels = (
-  { name = "#irssi"; chatnet = "ircnet"; autojoin = "No"; },
   { name = "#diku"; chatnet = "freenode"; autojoin = "yes"; },
-  { name = "#nethack"; chatnet = "freenode"; autojoin = "yes"; },
-  { name = "#sacketyhack"; chatnet = "freenode"; autojoin = "yes"; },
-  { name = "#interhack"; chatnet = "freenode"; autojoin = "yes"; },
-  { name = "#cobol"; chatnet = "SynIRC"; autojoin = "yes"; },
-  { name = "#letsplay"; chatnet = "SynIRC"; autojoin = "yes"; },
-  {
-    name = "#maverick_zero's_test_dome";
-    chatnet = "PSIGenix";
-    autojoin = "yes";
-  },
-  { name = "#quickfox"; chatnet = "QuickFox"; autojoin = "yes"; },
-  { name = "#psystra"; chatnet = "QuickFox"; autojoin = "yes"; },
   { name = "#regex"; chatnet = "Undernet"; autojoin = "yes"; }
+  { name = "#gaming.dk"; chatnet = "QuakeNet"; autojoin = "yes"; }
 );
 
 aliases = {
@@ -318,7 +307,7 @@ ignores = (
     channels = ( "#nethack" );
   }
 );
-hilights = ( { text = "Sebbe"; nick = "yes"; word = "yes"; } );
+hilights = ( { text = "kristoff3r"; nick = "yes"; word = "yes"; } );
 logs = { };
 windows = {
   1 = { 

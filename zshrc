@@ -58,6 +58,7 @@ alias ask="ssh -X sebbe@ask.diku.dk"
 # }}}
 # shortcuts {{{
 alias i='sudo apt-get install'
+alias u='sudo apt-get upgrade'
 alias s='apt-cache search'
 alias clear='clear; fortune'
 alias less='less -R'

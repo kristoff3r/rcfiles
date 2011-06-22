@@ -1,3 +1,23 @@
 
-on the commandline:
-    Warning: -no-recomp is deprecated: Use -fforce-recomp instead
+xmonad.hs:28:57:
+    No instance for (Enum String)
+      arising from the arithmetic sequence `1 .. 8 :: String'
+                   at xmonad.hs:28:57-74
+    Possible fix: add an instance declaration for (Enum String)
+    In the first argument of `(++)', namely `[1 .. 8 :: String]'
+    In the second argument of `(++)', namely
+        `[1 .. 8 :: String]
+       ++
+         ["9-files", "0-torrent", "+-music", "|-IRC", ....]'
+    In the `workspaces' field of a record
+
+xmonad.hs:28:63:
+    No instance for (Num String)
+      arising from the literal `8' at xmonad.hs:28:63
+    Possible fix: add an instance declaration for (Num String)
+    In the expression: 8 :: String
+    In the first argument of `(++)', namely `[1 .. 8 :: String]'
+    In the second argument of `(++)', namely
+        `[1 .. 8 :: String]
+       ++
+         ["9-files", "0-torrent", "+-music", "|-IRC", ....]'
