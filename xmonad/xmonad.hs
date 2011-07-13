@@ -2,38 +2,51 @@ import XMonad
 import System.Exit
 import qualified XMonad.StackSet as W 
 import qualified Data.Map as M
+
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.ManageDocks
+import XMonad.Hooks.UrgencyHook
 import XMonad.Hooks.SetWMName
+
 import XMonad.Util.Run(spawnPipe)
 import XMonad.Util.EZConfig(additionalKeys)
+
 import XMonad.Layout.Accordion
 import XMonad.Layout.NoBorders
 import XMonad.Layout
+
 import System.IO
 import System.Posix.Unistd
 
-statusBarCmd= "xmobar"
 dmenuCmd= "dmenu_run -nb '#1a1a1a' -nf '#ffffff' -sb '#aecf96' -sf black -p '>'"
 
+-------------------------------------------------------------------------------
+-- Main --
+main :: IO ()
+main = xmonad =<< statusBar cmd pp kb conf
+  where
+    uhook = withUrgencyHookC NoUrgencyHook urgentConfig
+    cmd = "bash -c \"tee >(xmobar -x0) | xmobar -x1\""
+    pp = myPP
+    kb = toggleStrutsKey
+    conf = uhook myConfig
 
-main = do din <- spawnPipe statusBarCmd
-          sleep 2
-          xmonad $ defaultConfig
+-------------------------------------------------------------------------------
+-- Configs --
+myConfig = defaultConfig { manageHook         = myManageHook <+> manageDocks <+> manageHook defaultConfig
+                         , layoutHook         = smartBorders (myLayout)
+                         , keys               = myKeys
+                         , workspaces         = myWorkspaces
+                         , modMask            = myModMask
+                         , normalBorderColor  = "#555555"
+                         , focusedBorderColor = "#bbbbbb"
+                         , borderWidth 	      = 1
+                         , startupHook        = (setWMName "LG3D" >> spawn "killall xbindkeys; xbindkeys") -- LG3D name is a fix for java
+                         }
 
-	               { manageHook         = myManageHook <+> manageDocks <+> manageHook defaultConfig
-                   , layoutHook         = smartBorders (myLayout)
-                   , keys               = myKeys
-	               , workspaces         = myWorkspaces
-                   , logHook            = dynamicLogWithPP $ myPP din
-                   , modMask            = mod4Mask     -- Rebind Mod to the Windows key
-                   , normalBorderColor  = "#555555"
-                   , focusedBorderColor = "#bbbbbb"
-	               , borderWidth 	    = 1
-                   , startupHook        = (setWMName "LG3D" >> spawn "killall xbindkeys; xbindkeys") -- LG3D name is a fix for java
-                   }
-
+-------------------------------------------------------------------------------
+-- Window Management --
 -- ManageHooks
 myManageHook :: ManageHook
 myManageHook = composeAll
@@ -43,19 +56,38 @@ myManageHook = composeAll
     , className =? "Transmission" --> doShift "0:torrent"
     , className =? "Nautilus" --> doShift "9:files"
     , className =? "Wine" --> doFloat
-    , className =? "irssi" --> doShift "|:IRC"
+    , className =? "xchat" --> doShift "|:IRC"
     , isFullscreen --> doFullFloat]
 
--- Workspaces
+-------------------------------------------------------------------------------
+-- Looks --
+-- bar
+myPP = defaultPP {
+                ppHidden = xmobarColor "#00FF00" ""
+              , ppCurrent = xmobarColor "#FF0000" "" . wrap "[" "]"
+              , ppUrgent = xmobarColor "#FF0000" "" . wrap "*" "*"
+              , ppLayout = xmobarColor "#FF0000" ""
+              , ppTitle = xmobarColor "#00FF00" "" . shorten 80
+              , ppSep = "<fc=#0033FF> | </fc>"
+            }
+
+-- urgent notification
+urgentConfig = UrgencyConfig { suppressWhen = Focused, remindWhen = Dont }
+
+-- keys
+toggleStrutsKey :: XConfig Layout -> (KeyMask, KeySym)
+toggleStrutsKey XConfig {XMonad.modMask = modMask} = (modMask, xK_b)
+
+-- borders
+borderWidth' = 1
+normalBorderColor'  = "#333333"
+focusedBorderColor' = "#AFAF87"
+
+-- workspaces
 myWorkspaces :: [WorkspaceId]
 myWorkspaces = ["§:web","1:term","2:code","3:pdf","4","5","6","7","8","9:files", "0:torrent", "+:music", "|:IRC", "<-:chat"]
 
--- DropNumbers removes the number if a workspace is named, i:name -> name
-dropNumbers wsId =  if (':' `elem` wsId)
-                    then drop 2 wsId
-			        else wsId
-
--- Layouts
+-- layouts
 myLayout = avoidStruts (tiled ||| Mirror tiled ||| Full)
   where
     tiled = Tall 1 (3/100) (1/2)
@@ -63,14 +95,12 @@ myLayout = avoidStruts (tiled ||| Mirror tiled ||| Full)
     ratio   = 1/2
     delta   = 3/100
 
--- Pretty print for xmobar
-myPP h = defaultPP
-                { ppCurrent = xmobarColor "black" "#aecf96"
-                , ppSep     = " | "
-                , ppOutput  = hPutStrLn h
-                }
+-------------------------------------------------------------------------------
+-- Button bindings --
+-- mod mask
+myModMask = mod4Mask
 
--- Keys
+-- keys
 myKeys :: XConfig Layout -> M.Map (KeyMask, KeySym) (X ())
 myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     -- killing programs

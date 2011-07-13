@@ -44,11 +44,11 @@
   mod4 + p
 
 # Chrome
-"chromium-browser"
+"google-chrome"
   mod4 + n
 
 # Google-chrome incognito
-"chromium-browser --incognito"
+"google-chrome --incognito"
   mod4 + shift + n
 
 # Genstarter dzen + indstiller skærme

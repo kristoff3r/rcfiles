@@ -36,6 +36,7 @@ setopt complete_in_word # hitting tab on the f in Mafile does the right thing
 # }}}
 # replace default utilities {{{
 alias top="htop"
+alias mosml="rlwrap mosml -P full"
 # }}}
 # add color to some things {{{
 alias ls='ls -G --color'

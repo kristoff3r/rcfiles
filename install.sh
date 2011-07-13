@@ -27,6 +27,8 @@ ln -Tfs $DIR/irssi $HOME/.irssi
 echo Installing xmonad config...
 ln -Tfs $DIR/xmonad/ $HOME/.xmonad
 ln -Tfs $DIR/xmobarrc $HOME/.xmobarrc
+ln -Tfs $DIR/xsession $HOME/.xsession
+
 
 echo Installing xbindkeys config...
 ln -Tfs $DIR/xbindkeysrc $HOME/.xbindkeysrc
