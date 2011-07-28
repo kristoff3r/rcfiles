@@ -20,8 +20,8 @@ bad_str=`perl -e "print '+' x (10 - $good )" | sed 's/+/ /g'`
 
 ip=`ifconfig $interface | grep -o "inet addr:[^ ]*" | awk -F: '{print $2}'`
 
-if [ -z "$ip" ]; then  # Check if interface has an ip
-    echo $essid "<fc=,#547a51>$bad_str</fc><fc=,#a8f5a3>$good_str</fc>"
+if [ -n "$ip" ]; then  # Check if interface has an ip
+    echo $essid "<fc=,#a8f5a3>$good_str</fc><fc=,#547a51>$bad_str</fc>"
 else
-    echo $essid "<fc=,#FFCC33>$bad_str</fc><fc=,#FFFF00>$good_str</fc>"
+    echo $essid "<fc=,#FFFF00>$good_str</fc><fc=,#FFCC33>$bad_str</fc>"
 fi
