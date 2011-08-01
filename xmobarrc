@@ -14,5 +14,5 @@ Config { font = "-*-terminus-*-*-*-*-12-*-*-*-*-*-*-u"
                     ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = " %StdinReader% }{   <fc=#429942>|</fc> %vol% <fc=#429942>|</fc> %wireless% <fc=#429942>|</fc> %power% <fc=#429942>|</fc> %cpu% <fc=#429942>|</fc> %memory% <fc=#429942>|</fc> %date%"
+       , template = " %StdinReader% }{ %apt% <fc=#429942>|</fc> %wireless% <fc=#429942>|</fc> %vol% <fc=#429942>|</fc> %power% <fc=#429942>|</fc> %cpu% <fc=#429942>|</fc> %memory% <fc=#429942>|</fc> %date%"
        }
