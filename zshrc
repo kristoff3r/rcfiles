@@ -61,9 +61,15 @@ alias ask="ssh -X sebbe@ask.diku.dk"
 alias i='sudo apt-get install'
 alias u='sudo apt-get upgrade'
 alias s='apt-cache search'
+alias ll='ls -la'
 alias clear='clear; fortune'
 alias less='less -R'
-alias wizmode='sudo /usr/games/nethack -D'
+alias pull='git pull'
+alias push='git push'
+function chpwd() {
+    emulate -LR zsh
+    ls
+}
 # }}}
 # fortune {{{
 if which fortune.pl >/dev/null; then
