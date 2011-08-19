@@ -1,2 +1,6 @@
 # Ignore my nickserv login, thanks
 irssi/nickserv.auth
+
+# Ignore vim plugins
+vim/eclim/
+vim/plugin/eclim.vim
