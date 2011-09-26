@@ -56,20 +56,22 @@ myManageHook = composeAll
     , className =? "Transmission" --> doShift "0:torrent"
     , className =? "Nautilus" --> doShift "9:files"
     , className =? "Wine" --> doFloat
-    , className =? "xchat" --> doShift "|:IRC"
+    , className =? "Xchat" --> doShift "|:IRC"
     , isFullscreen --> doFullFloat]
 
 -------------------------------------------------------------------------------
 -- Looks --
--- bar
-myPP = defaultPP {
-                ppHidden = xmobarColor "#00FF00" ""
-              , ppCurrent = xmobarColor "#FF0000" "" . wrap "[" "]"
-              , ppUrgent = xmobarColor "#FF0000" "" . wrap "*" "*"
-              , ppLayout = xmobarColor "#FF0000" ""
-              , ppTitle = xmobarColor "#00FF00" "" . shorten 80
-              , ppSep = "<fc=#0033FF> | </fc>"
-            }
+-- Pretty print for xmobar
+myPP :: Handle -> PP
+myPP h = defaultPP
+                 { ppCurrent = xmobarColor "black" "#aecf96"
+                 , ppSep     = " | "
+                 , ppUrgent  = xmobarColor "black" "#ff8c00"
+                 , ppOrder   = \(w : l : t : _) -> [l, w, t]
+                 , ppLayout  = (: []) . head
+                 , ppSort    = getSortByIndex >>= \f -> return $ f . filter (\w-> W.tag w /= "NSP") -- Removes the NSP workspace
+                 , ppOutput  = hPutStrLn h
+                 }
 
 -- urgent notification
 urgentConfig = UrgencyConfig { suppressWhen = Focused, remindWhen = Dont }

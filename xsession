@@ -32,9 +32,14 @@ xmodmap ~/.xmodmap
 gnome-screensaver
 
 # Starts the wireless script
+wireless.sh &
 
 # Starts IMs
 pidgin &
+xchat &
+
+# Starts the dropbox script
+dropbox start &
 
 # Låser skærmen, når låget er lukket og der ikke er eksterne skærme tilsluttet
 screenlocker &
