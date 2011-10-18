@@ -53,3 +53,5 @@ xmonad
 # Make sure that dzen doesn't keep running after logout
 killall dzenheader dzen2
 
+# f.lux
+xflux -l 55.686803 -g 12.530594

@@ -24,10 +24,10 @@ dmenuCmd= "dmenu_run -nb '#1a1a1a' -nf '#ffffff' -sb '#aecf96' -sf black -p '>'"
 -------------------------------------------------------------------------------
 -- Main --
 main :: IO ()
-main = xmonad =<< statusBar cmd pp kb conf
+main = xmonad =<< statusBar bar pp kb conf
   where
     uhook = withUrgencyHookC NoUrgencyHook urgentConfig
-    cmd = "bash -c \"tee >(xmobar -x0) | xmobar -x1\""
+    bar = "xmobar"
     pp = myPP
     kb = toggleStrutsKey
     conf = uhook myConfig
@@ -62,16 +62,14 @@ myManageHook = composeAll
 -------------------------------------------------------------------------------
 -- Looks --
 -- Pretty print for xmobar
-myPP :: Handle -> PP
-myPP h = defaultPP
-                 { ppCurrent = xmobarColor "black" "#aecf96"
-                 , ppSep     = " | "
-                 , ppUrgent  = xmobarColor "black" "#ff8c00"
-                 , ppOrder   = \(w : l : t : _) -> [l, w, t]
-                 , ppLayout  = (: []) . head
-                 , ppSort    = getSortByIndex >>= \f -> return $ f . filter (\w-> W.tag w /= "NSP") -- Removes the NSP workspace
-                 , ppOutput  = hPutStrLn h
-                 }
+myPP = defaultPP
+        { ppCurrent = xmobarColor "black" "#aecf96"
+        , ppSep     = " | "
+        , ppUrgent  = xmobarColor "black" "#ff8c00"
+        , ppOrder   = \(w : l : t : _) -> [l, w, t]
+        , ppLayout  = (: []) . head
+        }
+
 
 -- urgent notification
 urgentConfig = UrgencyConfig { suppressWhen = Focused, remindWhen = Dont }
