@@ -66,6 +66,7 @@ alias clear='clear; fortune'
 alias less='less -R'
 alias pull='git pull'
 alias push='git push'
+alias gdb='gdb -n -x ~/.gdbinit'
 function chpwd() {
     emulate -LR zsh
     ls

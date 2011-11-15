@@ -4,3 +4,5 @@ set pagination off
 set history filename ~/.gdbhistory
 set history save
 set history expansion
+start
+display/30i $eip
