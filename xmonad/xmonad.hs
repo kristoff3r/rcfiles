@@ -3,6 +3,10 @@ import System.Exit
 import qualified XMonad.StackSet as W 
 import qualified Data.Map as M
 
+import XMonad.Actions.GridSelect
+import XMonad.Actions.DynamicWorkspaces
+import XMonad.Actions.CopyWindow(copy)
+
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.ManageDocks
@@ -109,6 +113,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     -- layouts
     , ((modMask, xK_space ), sendMessage NextLayout)
     , ((modMask .|. shiftMask, xK_space ), setLayout $ XMonad.layoutHook conf)
+    , ((modMask, xK_g), goToSelected defaultGSConfig)
 
     -- focus
     , ((modMask, xK_Tab ), windows W.focusDown)

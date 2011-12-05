@@ -83,10 +83,18 @@ fi
 bindkey -v
 
 # Fix a few keys in putty
-bindkey '^[OH' beginning-of-line
+
+# Home
+bindkey '^[[7~' beginning-of-line
+
+# Insert
 bindkey '^[[2~' overwrite-mode
+
+# Delete
 bindkey '^[[3~' delete-char
-bindkey '^[OF' end-of-line
+
+# End
+bindkey '^[[8~' end-of-line
 
 # History search on ^R
 bindkey '^R' history-incremental-search-backward

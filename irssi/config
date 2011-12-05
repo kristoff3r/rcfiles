@@ -15,11 +15,11 @@ servers = (
   },
   { address = "silc.silcnet.org"; chatnet = "SILC"; port = "706"; },
   {
-    address = "chat.eu.freenode.net";
+    address = "niven.freenode.net";
     chatnet = "freenode";
-    port = "6667";
-    use_ssl = "no";
-    ssl_verify = "no";
+    port = "7000";
+    use_ssl = "yes";
+    ssl_verify = "yes";
     autoconnect = "yes";
   },
   {
@@ -28,7 +28,6 @@ servers = (
     port = "6667";
     use_ssl = "no";
     ssl_verify = "no";
-    autoconnect = "yes";
   },
   {
     address = "irc.psigenix.net";
@@ -36,7 +35,6 @@ servers = (
     port = "6667";
     use_ssl = "no";
     ssl_verify = "no";
-    autoconnect = "yes";
   },
   {
     address = "irc.quickfox.net";
@@ -44,7 +42,6 @@ servers = (
     port = "6667";
     use_ssl = "no";
     ssl_verify = "no";
-    autoconnect = "yes";
   },
   {
     address = "eu.undernet.org";
@@ -52,7 +49,6 @@ servers = (
     port = "6667";
     use_ssl = "no";
     ssl_verify = "no";
-    autoconnect = "yes";
   },
   {
     address = "irc.inet.tele.dk";
@@ -277,7 +273,7 @@ statusbar = {
   };
 };
 settings = {
-  core = { real_name = "Unknown"; user_name = "sebbe"; nick = "sebbe"; };
+  core = { real_name = "Unknown"; user_name = "kristoff3r"; nick = "kristoff3r"; };
   "fe-text" = { actlist_sort = "refnum"; };
   "fe-common/core" = {
     autolog = "yes";

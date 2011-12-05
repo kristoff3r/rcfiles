@@ -28,7 +28,12 @@ echo Installing xmonad config...
 ln -Tfs $DIR/xmonad/ $HOME/.xmonad
 ln -Tfs $DIR/xmobarrc $HOME/.xmobarrc
 ln -Tfs $DIR/xsession $HOME/.xsession
+ln -Tfs $DIR/Xdefaults $HOME/.Xdefaults
+mkdir -p $HOME/bin
+for i in $DIR/status/*; do ln -Tfs $DIR/status/$i $HOME/bin/$i; done
 
+echo Installing gdb config...
+ln -Tfs $DIR/gdbinit $HOME/.gdbinit
 
 echo Installing xbindkeys config...
 ln -Tfs $DIR/xbindkeysrc $HOME/.xbindkeysrc

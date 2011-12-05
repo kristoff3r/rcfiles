@@ -10,11 +10,11 @@
 # x11-xserver-utils (for xmodmap)
 # xbindkeys (for shortcuts)
 
-# Add ~/bin to PATH
-export PATH="$HOME/bin:$PATH"
+# Add ~/bin and /sbin to PATH
+export PATH="$HOME/bin:/sbin:$PATH"
 
-# Default browser er chrome
-export BROWSER="google-chrome"
+xsetroot -cursor_name left_ptr
+xsetroot -solid black
 
 # Turns off audio
 soundcontroller init
@@ -28,21 +28,11 @@ setxkbmap -option terminate:ctrl_alt_bksp
 # Remaps some of the keys
 xmodmap ~/.xmodmap
 
-# For locking the screen
-gnome-screensaver
-
 # Starts the wireless script
 wireless.sh &
 
-# Starts IMs
-pidgin &
-xchat &
-
 # Starts the dropbox script
 dropbox start &
-
-# Låser skærmen, når låget er lukket og der ikke er eksterne skærme tilsluttet
-screenlocker &
 
 # Saves DBUS
 set | grep DBUS > ~/.xmonad/tempenv
@@ -52,6 +42,3 @@ xmonad
 
 # Make sure that dzen doesn't keep running after logout
 killall dzenheader dzen2
-
-# f.lux
-xflux -l 55.686803 -g 12.530594

@@ -9,7 +9,7 @@ Config { font = "-*-terminus-*-*-*-*-12-*-*-*-*-*-*-u"
                     , Run Com "battery_status" [] "power" 10
                     , Run Com "wireless_status" [] "wireless" 10
                     , Run Com "volume_status" [] "vol" 10
-                    , Run Com "apt_status" [] "apt" 3000
+                    , Run Com "apt_status &" [] "apt" 3000
                     , Run StdinReader
                     ]
        , sepChar = "%"
