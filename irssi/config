@@ -8,10 +8,11 @@ servers = (
     port = "6667";
   },
   { address = "irc.dal.net"; chatnet = "DALnet"; port = "6667"; },
-  { 
+  {
     address = "irc.quakenet.org";
     chatnet = "QuakeNet";
     port = "6667";
+    autoconnect = "yes";
   },
   { address = "silc.silcnet.org"; chatnet = "SILC"; port = "706"; },
   {
@@ -85,6 +86,7 @@ chatnets = {
     max_kicks = "1";
     max_msgs = "3";
     max_whois = "30";
+    nick = "kristoff3r";
   };
   DALnet = {
     type = "IRC";
@@ -97,6 +99,7 @@ chatnets = {
     max_kicks = "1";
     max_msgs = "3";
     max_whois = "30";
+    nick = "gH|gravityy";
   };
   SILC = { type = "SILC"; };
   Ubuntu = { type = "IRC"; };
@@ -104,12 +107,12 @@ chatnets = {
   SynIRC = { type = "IRC"; nick = "kristoff3r"; };
   PSIGenix = { type = "IRC"; nick = "kristoff3r"; };
   QuickFox = { type = "IRC"; nick = "kristoff3r"; };
-  QuakeNet = { type = "IRC"; nick = "[R]gravityy" };
 };
 
 channels = (
   { name = "#diku"; chatnet = "freenode"; autojoin = "yes"; },
-  { name = "#regex"; chatnet = "Undernet"; autojoin = "yes"; }
+  { name = "#eggsml"; chatnet = "freenode"; autojoin = "yes"; },
+  { name = "#zomg_pwnies"; chatnet = "freenode"; autojoin = "yes"; },
   { name = "#gaming.dk"; chatnet = "QuakeNet"; autojoin = "yes"; }
 );
 
@@ -273,7 +276,12 @@ statusbar = {
   };
 };
 settings = {
-  core = { real_name = "Unknown"; user_name = "kristoff3r"; nick = "kristoff3r"; };
+  core = {
+    real_name = "Kristoffer Søholm";
+    user_name = "kristoff3r";
+    nick = "kristoff3r";
+    timestamp_format = "%H:%M:%S";
+  };
   "fe-text" = { actlist_sort = "refnum"; };
   "fe-common/core" = {
     autolog = "yes";
@@ -317,8 +325,8 @@ windows = {
       {
         type = "CHANNEL";
         chat_type = "IRC";
-        name = "#cobol";
-        tag = "SynIRC";
+        name = "#diku";
+        tag = "freenode";
       }
     );
     sticky = "yes";
@@ -329,8 +337,8 @@ windows = {
       {
         type = "CHANNEL";
         chat_type = "IRC";
-        name = "#letsplay";
-        tag = "SynIRC";
+        name = "#eggsml";
+        tag = "freenode";
       }
     );
     sticky = "yes";
@@ -341,8 +349,8 @@ windows = {
       {
         type = "CHANNEL";
         chat_type = "IRC";
-        name = "#maverick_zero's_test_dome";
-        tag = "PSIGenix";
+        name = "#zomg_pwnies";
+        tag = "freenode";
       }
     );
     sticky = "yes";
@@ -353,72 +361,14 @@ windows = {
       {
         type = "CHANNEL";
         chat_type = "IRC";
-        name = "#diku";
-        tag = "freenode";
+        name = "#gaming.dk";
+        tag = "QuakeNet";
       }
     );
     sticky = "yes";
     parent = "1";
   };
   6 = {
-    items = (
-      {
-        type = "CHANNEL";
-        chat_type = "IRC";
-        name = "#nethack";
-        tag = "freenode";
-      }
-    );
-    sticky = "yes";
-    parent = "1";
-  };
-  7 = {
-    items = (
-      {
-        type = "CHANNEL";
-        chat_type = "IRC";
-        name = "#sacketyhack";
-        tag = "freenode";
-      }
-    );
-    sticky = "yes";
-    parent = "1";
-  };
-  8 = {
-    items = (
-      {
-        type = "CHANNEL";
-        chat_type = "IRC";
-        name = "#interhack";
-        tag = "freenode";
-      }
-    );
-    sticky = "yes";
-    parent = "1";
-  };
-  9 = {
-    items = (
-      {
-        type = "CHANNEL";
-        chat_type = "IRC";
-        name = "#quickfox";
-        tag = "QuickFox";
-      }
-    );
-  };
-  10 = {
-    items = (
-      {
-        type = "CHANNEL";
-        chat_type = "IRC";
-        name = "#psystra";
-        tag = "QuickFox";
-      }
-    );
-    sticky = "yes";
-    parent = "1";
-  };
-  11 = {
     items = (
       {
         type = "CHANNEL";
@@ -430,9 +380,9 @@ windows = {
     sticky = "yes";
     parent = "1";
   };
-  12 = { name = "hilight"; sticky = "yes"; };
+  20 = { name = "hilight"; sticky = "yes"; };
 };
 mainwindows = {
-  1 = { first_line = "8"; lines = "52"; };
-  12 = { first_line = "1"; lines = "7"; };
+  1 = { first_line = "6"; lines = "40"; };
+  20 = { first_line = "1"; lines = "5"; };
 };

@@ -6,4 +6,4 @@ export NOPASTE_SERVICES='Pastie Codepeek Gist PastebinCom'
 
 # Default editor = vim
 export EDITOR=vim
-
+export MPD_HOST=mini

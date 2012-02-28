@@ -52,7 +52,7 @@ URxvt*color7  : #D3D7CF
 URxvt*color15 : #EEEEEC
 
 # Perl extensions
-URxvt.perl-lib:          /home/freaken/code/urxvt-perls
+URxvt.perl-lib:          /home/kris/code/urxvt-perls
 URxvt.perl-ext:          default,keyboard-select,url-select,clipboard
 URxvt.keysym.M-Escape:   perl:keyboard-select:activate
 URxvt.keysym.M-u:        perl:url-select:select_next

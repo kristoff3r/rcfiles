@@ -29,10 +29,13 @@ setxkbmap -option terminate:ctrl_alt_bksp
 xmodmap ~/.xmodmap
 
 # Starts the wireless script
-wireless.sh &
+sudo wireless.sh &
 
 # Starts the dropbox script
 dropbox start &
+
+# Fuck off bell noise
+xset b off
 
 # Saves DBUS
 set | grep DBUS > ~/.xmonad/tempenv
