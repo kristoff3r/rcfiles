@@ -15,6 +15,7 @@ export PATH="$HOME/bin:/sbin:$PATH"
 
 xsetroot -cursor_name left_ptr
 xsetroot -solid black
+xset b off
 
 # Turns off audio
 soundcontroller init
