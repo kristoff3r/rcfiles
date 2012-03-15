@@ -37,6 +37,11 @@ dropbox start &
 # Fuck off bell noise
 xset b off
 
+# Set sound and brightness
+soundcontroller off
+soundcontroller silence
+echo 9 > /sys/class/backlight/acpi_video0/brightness
+
 # Saves DBUS
 set | grep DBUS > ~/.xmonad/tempenv
 
