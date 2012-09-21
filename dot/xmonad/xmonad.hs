@@ -158,6 +158,7 @@ myManageHook = [ className =? "Xchat"      --> doShift "irc"
                                                     (n,_,_)  -> do let ws = "vm-" ++ n
                                                                    liftX $ addHiddenWorkspace ws
                                                                    doShift ws
+               , resource =? "xfce4-notifyd" --> doIgnore <+> doF W.focusDown
                ]
 
 myBrowser :: String
