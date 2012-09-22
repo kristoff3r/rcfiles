@@ -237,6 +237,7 @@ myKeys =
   -- Global window
   , ("M-S-g", toggleGlobal)
   -- Notifications
+  , ("M-8", spawn "notify-send \"$(wireless_notify)\"")
   , ("M-9", spawn "notify-send \"$(acpi)\"")
   , ("M-0", spawn "notify-send \"$(date)\"")
   ]

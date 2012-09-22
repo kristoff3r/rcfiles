@@ -1,0 +1,22 @@
+# Navigation
+alias ll='ls -la'
+
+# Apt
+alias i='sudo apt-get install'
+alias s='apt-cache search'
+alias u='sudo apt-get upgrade'
+
+# Autojump
+source /usr/share/autojump/autojump.zsh
+
+# Do ls every time you cd
+function chpwd() {
+    emulate -LR zsh
+        ls
+}
+
+
+
+# Misc
+alias gdb='gdb -n -x ~/.gdbinit'
+
