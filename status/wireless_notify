@@ -1,5 +1,8 @@
 #!/bin/sh
 
+
+#for con in {"eth0"}; do $$con_ip= ifconfig | grep wlan0 -A10 | grep -B10 "^$" | grep "inet addr:" | awk -F: '{ print $2 }' | awk '{print $1}'; done 
+
 connection=`iwconfig 2>/dev/null | egrep "ESSID:[^ ]*" | egrep -v -e "ESSID:off/any" -e "\\x[0-9A-F]{2}" | head -n1`
 
 if [ -z "$connection" ]; then  # Check if an essid was found
@@ -12,6 +15,15 @@ essid=`echo $connection | awk -F\" '{print $2}'`
 link=`iwconfig $interface | grep -o "Link Quality=[^ ]*" | awk -F= '{print $2}'`
 cur_strength=`echo $link | awk -F/ '{print $1}'`
 max_strength=`echo $link | awk -F/ '{print $2}'`
-ip=`ifconfig $interface | grep -o "inet addr:[^ ]*" | awk -F: '{print $2}'`
+wireless_ip=`ifconfig $interface | grep -o "inet addr:[^ ]*" | awk -F: '{print $2}'`
 
-echo "$essid: $ip $cur_strength/$max_strength"
+wired=
+wireless="$essid: $wireless_ip $cur_strength/$max_strength"
+
+if [ -z "$wireless_ip" ]; then
+  echo $wireless
+else
+  echo $wired
+fi
+
+  echo $wireless

@@ -57,7 +57,7 @@ main = do
   xmonad myConfig
 
 startup :: [String]
-startup = ["xcompmgr"]
+startup = ["xcompmgr", "pidgin", "xchat"]
 
 myConfig = withUrgencyHook LibNotifyUrgencyHook $ defaultConfig
    { manageHook         = manageHook defaultConfig <+>

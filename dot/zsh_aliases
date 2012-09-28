@@ -20,3 +20,4 @@ function chpwd() {
 # Misc
 alias gdb='gdb -n -x ~/.gdbinit'
 
+export PYTHONPATH='/home/kris/git/pwntools'

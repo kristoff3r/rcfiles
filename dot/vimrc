@@ -293,7 +293,7 @@ fun! Modulify(replace)
 endfun
 
 fun! CPPSkeleton()
-    if expand("%:p") =~? "usaco"
+    if expand("%:p") =~? "USACO"
         silent 0read ~/.vim/skeletons/usaco.cpp
         silent :%s/<REPLACEME>/\=expand("%:t:r")/g
     else
