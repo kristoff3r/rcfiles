@@ -12,9 +12,18 @@ xmodmap ~/.xmodmap
 # Starts the dropbox script
 dropbox start &
 
+# Stop cd drive from ejecting
+eject -i 1
+
 # Start IM & IRC
 #(pidgin &; sleep 10)
 #(xchat &; sleep 10)
 
+# DONT EJECT
+eject -i 1
+
 # Starts xmonad
 xmonad
+
+
+

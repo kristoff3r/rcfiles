@@ -5,12 +5,13 @@
 import XMonad
 import qualified Data.Map as M
 import qualified XMonad.StackSet as W
+import XMonad.Config.Gnome(gnomeConfig)
 
 ----- Misc
 import Data.Monoid(mempty, mappend)
 import Data.List((\\))
 import Data.Ratio((%))
-import Control.Monad(when)
+import Control.Monad(when, void)
 import Control.Concurrent(threadDelay)
 import System.Directory
 import System.Locale
@@ -24,19 +25,24 @@ import XMonad.Layout.WorkspaceDirAlt
 import XMonad.Util.ScratchpadExtra
 
 ----- Actions
+import XMonad.Actions.CycleWS
 import XMonad.Actions.GridSelect
 import XMonad.Actions.TopicSpace
 import XMonad.Actions.WithAll
 import XMonad.Actions.DynamicWorkspaces
+import XMonad.Actions.WindowGo (ifWindows)
 
 ----- Hooks
 import XMonad.Hooks.FadeInactive
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.ManageDocks
+import XMonad.Hooks.SetWMName
 import XMonad.Hooks.UrgencyHook
+import XMonad.Hooks.ICCCMFocus
 
 ----- Layout
 import XMonad.Layout.Grid
+import XMonad.Layout.ResizableTile
 import XMonad.Layout.IM
 import XMonad.Layout.NoBorders
 import XMonad.Layout.PerWorkspace
@@ -56,29 +62,44 @@ main = do
   mapM_ spawn startup
   xmonad myConfig
 
-startup :: [String]
-startup = ["xcompmgr", "pidgin", "xchat"]
+startupCond :: [(String, String)]
+startupCond = [ ("pidgin","Pidgin")
+              , ("xchat","Xchat")
+              --, ("optirun steam steam://open/console","Steam")
+              ]
 
-myConfig = withUrgencyHook LibNotifyUrgencyHook $ defaultConfig
-   { manageHook         = manageHook defaultConfig <+>
+startup :: [String]
+startup = ["xcompmgr", "dropbox.py start"]
+
+myConfig = withUrgencyHook LibNotifyUrgencyHook $ gnomeConfig
+   { manageHook         = manageHook gnomeConfig <+>
                           composeAll myManageHook <+>
                           scratchpadManageHook (W.RationalRect 0.2 0.2 0.6 0.6)
    , layoutHook         = smartBorders $ setWorkspaceDirs myLayout
-   , terminal           = "urxvt"
+   , terminal           = "terminator"
    , modMask            = mod4Mask
    , normalBorderColor  = "#555555"
    , focusedBorderColor = "#bbbbbb"
    , focusFollowsMouse  = False
    , handleEventHook    = myEventHook
-   , logHook            = fadeOutLogHook $ fadeIf isUnfocusedOnCurrentWS 0.8
+   , startupHook        = do return ()
+                             checkKeymap myConfig myKeys
+                             mapM_ (uncurry spawnUnlessExists) startupCond
+                             startupHook gnomeConfig
+                             setWMName "LG3D"
+   , logHook            = do fadeOutLogHook $ fadeIf isUnfocusedOnCurrentWS 0.8
+                             takeTopFocus
    , borderWidth        = 0
    , workspaces         = myTopics
    }
    `removeKeysP` (["M-" ++ m ++ k | m <- ["", "S-"], k <- map show [1..9 :: Int]])
    `additionalKeysP` myKeys
 
-myLayout = smartBorders . avoidStruts $ onWorkspace "im" (withIM (1%5) (Role "buddy_list") Grid) $
-                                        Full ||| GridRatio (4/3)
+
+myLayout = smartBorders . avoidStruts $
+           onWorkspace "im"    (withIM (1%5) (Role "buddy_list") Grid) $
+  --         onWorkspace "steam" (withIM (1%5) (Role "Friends") Grid) $
+           Full ||| GridRatio (4/3) ||| Mirror (Tall 1 (3/100) (1/2))
 
 myEventHook = onRescreen customRescreen `mappend` deleteUnimportant (=~ "^(scratchpad|vm|monitor)-") callback
   where callback dead = withDir $ \tag dir -> if (tag =~ "^scratchpad-" && dir =~ ("^" ++ myScratchpadDir)) then
@@ -113,25 +134,19 @@ myTopics =
   [ "web"
   , "im"
   , "irc"
+  , "bachelor"
+  , "pwnies"
+  , "steam"
   , "organise"
   , "mail"
   , "multimedia"
-  , "procrastination"
   , "wireshark"
   , "virtualbox"
   , "download"
-  , "study"
-    -- Coding
-  , "c"
-  , "haskell"
-  , "python"
-  , "intel"
-    -- Projects
-  , "treasure-hunt"
   , "xmonad"
   , "config"
-  , "gitosis"
-  , "updates"
+  , "ida"
+  , "ping"
   ]
 
 setWorkspaceDirs layout =
@@ -139,18 +154,15 @@ setWorkspaceDirs layout =
     add "pwnies"   "~/pwnies"                  $
     add "download" "~/Downloads"               $
     add "android"  "~/kode/android"            $
-    add "c"        "~/kode/c"                  $
-    add "haskell"  "~/kode/haskell"            $
-    add "python"   "~/kode/python"             $
     add "xmonad"   "~/.xmonad"                 $
     add "config"   "~/git/rcfiles"             $
-    add "gitosis"  "~/git/gitosis-admin"       $
     workspaceDir "~" layout
   where add ws dir = onWorkspace ws (workspaceDir dir layout)
 
 myManageHook :: [ManageHook]
 myManageHook = [ className =? "Xchat"      --> doShift "irc"
                , className =? "Pidgin"     --> doShift "im"
+               , className =? "Steam"      --> doShift "steam"
                , isFullscreen              --> doFullFloat
                , className =? "VirtualBox" --> do name <- title
                                                   case (name =~ "( \\(.*\\))?( \\[[^\\]]+\\])? - Oracle VM VirtualBox$") :: (String,String,String) of
@@ -166,6 +178,9 @@ myBrowser = "google-chrome"
 
 shell :: X ()
 shell = spawn (terminal myConfig)
+
+spawnUnlessExists :: String -> String -> X ()
+spawnUnlessExists p t = ifWindows (className =? t) (void . return) (spawn p)
 
 browser, incogBrowser, newBrowser, appBrowser :: [String] -> X ()
 browser s       = safeSpawn myBrowser s
@@ -191,18 +206,15 @@ myTopicConfig = TopicConfig
       [ ("web", browser [])
       , ("im", spawn "pidgin")
       , ("irc", spawn "xchat")
+      , ("steam", spawn "optirun steam steam://open/console")
       , ("organise", appBrowser ["https://calendar.google.com"])
       , ("mail", appBrowser ["https://gmail.com"])
-      , ("procrastination", incogBrowser ["https://facebook.com"] >>
-                            newBrowser ["https://reader.google.com", "http://reddit.com"])
       , ("virtualbox", spawn "virtualbox")
       , ("xmonad", shell)
       , ("config", shell)
-      , ("c", shell)
-      , ("gitosis", shell)
-      , ("updates", shell)
-      , ("treasure-hunt", shell)
       , ("wireshark", spawn "wireshark")
+      , ("ida", spawn "ida 1600x900")
+      , ("ping", spawn $ (terminal myConfig) ++ "-f -e ping 8.8.8.8")
       ]
   , defaultTopicAction = const $ return ()
   , defaultTopic = "web"
@@ -211,14 +223,14 @@ myTopicConfig = TopicConfig
 
 myKeys :: [(String, X ())]
 myKeys =
-  [ ("M-S-<Esc>", spawn "if type xmonad; then xmonad --recompile && xmonad --restart; else xmessage xmonad not in \\$PATH: \"$PATH\"; fi")
-  , ("M-z", goToSelectedWS myTopicConfig True myGSConfig)
+  [ ("M-z", goToSelectedWS myTopicConfig True myGSConfig)
+  , ("M-<", toggleWS)
   , ("M-g", goToSelected myGSConfig)
+  , ("M-S-p", spawn "pkill gnome-panel || gnome-panel")
   , ("M-p", shellPrompt myXPConfig)
-  , ("M-S-Enter", shell)
   , ("M-b", browser [])
   , ("M-S-b", incogBrowser [])
-  , ("M-l", spawn "i3lock")
+  --, ("M-l", spawn "i3lock")
   -- Dynamic workspaces
   , ("M-d", changeDir myXPConfig)
   , ("M-n", addWorkspacePrompt myXPConfig)
@@ -232,8 +244,15 @@ myKeys =
                shell)
   -- Workspace navigation
   , ("M-a", shiftToSelectedWS True myGSConfig)
+  , ("M-<Right>", nextScreen)
+  , ("M-<Left>", prevScreen)
+  , ("M-S-<Right>", swapNextScreen)
+  , ("M-S-<Left>", swapPrevScreen)
+  -- Window swapping
+  , ("M-S-h", windows W.swapDown)
+  , ("M-S-l", windows W.swapUp)
   -- Scratchpad
-  , ("M-S-<Space>", scratchpadSpawnActionCustom "urxvt -name scratchpad")
+  , ("M-S-<Space>", scratchpadSpawnActionCustom "gnome-terminal --disable-factory --name scratchpad")
   -- Global window
   , ("M-S-g", toggleGlobal)
   -- Notifications

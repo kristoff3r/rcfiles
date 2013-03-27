@@ -21,6 +21,14 @@ set nojoinspaces
 
 " don't move the cursor to the start of the line when changing buffers
 set nostartofline
+
+" show no-break space as tilde if supported
+set listchars+=nbsp:~       
+set listchars+=precedes:<,extends:>
+
+" ignore case when search text is all-lowercase
+set ignorecase smartcase    
+
 "}}}
 " Display {{{
 " color!
@@ -118,7 +126,8 @@ set isfname+=:
 set wildmode=longest,list,full
 
 " format using par
-set formatprg=par\ -w78
+set formatprg=par\ -w90
+set formatoptions=cq
 
 " persistent undo
 if exists("+undofile")
@@ -237,6 +246,10 @@ autocmd BufNewFile *.cpp silent call CPPSkeleton()
 autocmd BufReadPost *.smc set bin | set noeol
 autocmd BufReadPost *.sml silent set filetype=sml tabstop=2 softtabstop=2 shiftwidth=2
 autocmd BufReadPost *.sig silent set filetype=sml tabstop=2 softtabstop=2 shiftwidth=2
+
+" Haskell
+autocmd BufRead *.y set syn=haskell
+
 "}}}
 " Auto +x {{{
 au BufWritePost *.{sh,pl} silent exe "!chmod +x %"
@@ -311,8 +324,9 @@ set tags=./tags,./../tags,./../../tags,./../../../tags,tags
 " haskell-mode
 au BufEnter *.hs compiler ghc
 let g:haddock_browser="/usr/bin/lynx"
+let g:ghcmod_hlint_options=['']
 " ghc-mod
-autocmd BufWritePost *.hs GhcModCheckAndLintAsync
+" autocmd BufWritePost *.hs GhcModCheckAndLintAsync
 " }}}
 " }}}
 " icfp {{{

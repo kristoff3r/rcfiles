@@ -22,7 +22,7 @@ URxvt.background: Black
 URxvt.foreground: White
 URxvt.urgentOnBell: True
 URxvt.saveLines: 65535
-URxvt.font: xft: DejaVu Sans Mono:size=10:hinting=true:antialias=true
+URxvt.font: xft: DejaVu Sans Mono:size=12:hinting=true:antialias=true
 URxvt*letterSpace: -1
 
 # Terminal-colors:
@@ -52,7 +52,6 @@ URxvt*color7  : #D3D7CF
 URxvt*color15 : #EEEEEC
 
 # Perl extensions
-URxvt.perl-lib:          /home/kris/code/urxvt-perls
 URxvt.perl-ext:          default,keyboard-select,url-select,clipboard
 URxvt.keysym.M-Escape:   perl:keyboard-select:activate
 URxvt.keysym.M-u:        perl:url-select:select_next

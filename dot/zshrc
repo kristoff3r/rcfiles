@@ -35,3 +35,10 @@ source $ZSH/oh-my-zsh.sh
 
 # Customize to your needs...
 source $HOME/.zsh_aliases
+source $HOME/.zshenv
+
+export PERL_LOCAL_LIB_ROOT="/home/kris/perl5";
+export PERL_MB_OPT="--install_base /home/kris/perl5";
+export PERL_MM_OPT="INSTALL_BASE=/home/kris/perl5";
+export PERL5LIB="/home/kris/perl5/lib/perl5/x86_64-linux-gnu-thread-multi:/home/kris/perl5/lib/perl5";
+export PATH="/home/kris/perl5/bin:/home/kris/.cabal/bin:$PATH";
