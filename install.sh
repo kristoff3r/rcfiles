@@ -11,16 +11,10 @@ mkdir -p /var/tmp/vim/swap
 mkdir -p /var/tmp/vim/undo
 
 echo Setting default shell to zsh...
-chsh -s `which zsh`
-
-#mkdir -p $HOME/bin
-#cd $DIR/status
-#for i in *; do ln -Tfs $DIR/status/$i $HOME/bin/$i; done
-#cd $DIR
+#chsh -s `which zsh`
 
 cd dot
 for file in *; do ln -fs $DIR/dot/$file $HOME/.$file; done
 cd $DIR
 
 echo All done!
-

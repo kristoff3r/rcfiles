@@ -64,7 +64,6 @@ main = do
 
 startupCond :: [(String, String)]
 startupCond = [ ("pidgin","Pidgin")
-              , ("xchat","Xchat")
               --, ("optirun steam steam://open/console","Steam")
               ]
 
@@ -134,35 +133,34 @@ myTopics =
   [ "web"
   , "im"
   , "irc"
-  , "bachelor"
   , "pwnies"
   , "steam"
   , "organise"
   , "mail"
-  , "multimedia"
+  , "music"
   , "wireshark"
   , "virtualbox"
   , "download"
   , "xmonad"
-  , "config"
   , "ida"
+  , "ida64"
   , "ping"
   ]
 
 setWorkspaceDirs layout =
     add "organise" "~/notes"                   $
+    add "music"    "~/musik"                   $
     add "pwnies"   "~/pwnies"                  $
     add "download" "~/Downloads"               $
     add "android"  "~/kode/android"            $
     add "xmonad"   "~/.xmonad"                 $
-    add "config"   "~/git/rcfiles"             $
     workspaceDir "~" layout
   where add ws dir = onWorkspace ws (workspaceDir dir layout)
 
 myManageHook :: [ManageHook]
-myManageHook = [ className =? "Xchat"      --> doShift "irc"
-               , className =? "Pidgin"     --> doShift "im"
+myManageHook = [ className =? "Pidgin"     --> doShift "im"
                , className =? "Steam"      --> doShift "steam"
+               , className =? "steam"      --> doShift "steam"
                , isFullscreen              --> doFullFloat
                , className =? "VirtualBox" --> do name <- title
                                                   case (name =~ "( \\(.*\\))?( \\[[^\\]]+\\])? - Oracle VM VirtualBox$") :: (String,String,String) of
@@ -205,15 +203,16 @@ myTopicConfig = TopicConfig
   , topicActions = M.fromList
       [ ("web", browser [])
       , ("im", spawn "pidgin")
-      , ("irc", spawn "xchat")
-      , ("steam", spawn "optirun steam steam://open/console")
+      , ("irc", safeSpawn (terminal myConfig) ["-x", "ssh", "lolbox.pwnies.dk", "-t", "screen", "-U", "-dr", "irc"])
+      , ("steam", spawn "optirun steam")
       , ("organise", appBrowser ["https://calendar.google.com"])
       , ("mail", appBrowser ["https://gmail.com"])
       , ("virtualbox", spawn "virtualbox")
+      , ("music", spawn "vlc ~/musik/EuroDance.pls")
       , ("xmonad", shell)
-      , ("config", shell)
       , ("wireshark", spawn "wireshark")
       , ("ida", spawn "ida 1600x900")
+      , ("ida64", spawn "ida64")
       , ("ping", spawn $ (terminal myConfig) ++ "-f -e ping 8.8.8.8")
       ]
   , defaultTopicAction = const $ return ()

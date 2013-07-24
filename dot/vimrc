@@ -242,6 +242,7 @@ autocmd BufNewFile *.c  silent 0read ~/.vim/skeletons/c.c | normal 3j$
 autocmd BufNewFile *.tex silent 0read ~/.vim/skeletons/latex.tex | normal G3k
 
 autocmd BufNewFile *.cpp silent call CPPSkeleton()
+autocmd BufNewFile doit.py silent 0read ~/.vim/skeletons/doit.py | normal G
 
 autocmd BufReadPost *.smc set bin | set noeol
 autocmd BufReadPost *.sml silent set filetype=sml tabstop=2 softtabstop=2 shiftwidth=2
