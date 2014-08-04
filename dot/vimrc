@@ -126,7 +126,7 @@ set isfname+=:
 set wildmode=longest,list,full
 
 " format using par
-set formatprg=par\ -w90
+set formatprg=par\ -w79
 set formatoptions=cq
 
 " persistent undo

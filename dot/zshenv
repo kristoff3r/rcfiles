@@ -1,5 +1,5 @@
 # Add my local ~/bin to path
-export PATH=~/bin:/sbin/:~/git/pwntools/bin:$PATH
+export PATH=~/bin:/sbin/:/usr/sbin/:~/git/pwntools/bin:$PATH
 
 # App::Nopaste
 export NOPASTE_SERVICES='Pastie Codepeek Gist PastebinCom'
@@ -13,7 +13,7 @@ export IDEA_JDK=/usr/lib/jvm/jdk1.6.0_34
 
 
 #pwntools
-export PYTHONPATH=/home/kris/git/pwntools/lib:/home/kris/libsvm-3.16/python:$PYTHONPATH
+export PYTHONPATH=/home/kris/git/pwntools:/home/kris/libsvm-3.16/python:$PYTHONPATH
 
 #JAVA
 export PATH=/usr/lib/jvm/java-7-openjdk-amd64/bin/:$PATH
@@ -21,3 +21,6 @@ export PATH=/usr/lib/jvm/java-7-openjdk-amd64/bin/:$PATH
 #lesspipe
 export LESSOPEN="| /usr/bin/lesspipe %s";
 export LESSCLOSE="/usr/bin/lesspipe %s %s";
+
+# Autojump debian
+. /usr/share/autojump/autojump.zsh

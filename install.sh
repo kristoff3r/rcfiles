@@ -5,16 +5,15 @@ NAME="Kristoffer Søholm"
 GITHUB_USER="kristoff3r"
 LINUX_USER="kris"
 
+echo "Making vim swap/undo directories..."
+#mkdir -p /var/tmp/vim/swap
+#mkdir -p /var/tmp/vim/undo
 
-echo Installing vim config...
-mkdir -p /var/tmp/vim/swap
-mkdir -p /var/tmp/vim/undo
-
-echo Setting default shell to zsh...
-#chsh -s `which zsh`
-
-cd dot
-for file in *; do ln -fs $DIR/dot/$file $HOME/.$file; done
+cd $DIR/dot
+for file in *; do 
+#    --ln -fs $DIR/dot/$file $HOME/.$file;
+    echo "Created symlink for .$file";
+done
 cd $DIR
 
 echo All done!

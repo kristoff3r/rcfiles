@@ -7,7 +7,7 @@ alias s='apt-cache search'
 alias u='sudo apt-get upgrade'
 
 # Git
-alias gp='git pull'
+alias gp='git pull --rebase'
 alias gpp='git pull && git push'
 alias gpu='git push'
 alias ga='git add'
@@ -15,10 +15,6 @@ alias gc='git commit -m'
 alias gs='git status'
 alias gl='git log'
 alias gd='git diff'
-
-# Fasd
-eval "$(fasd --init auto)"
-source $HOME/.fasdrc
 
 # Do ls every time you cd
 function chpwd() {
@@ -32,6 +28,7 @@ alias mosml='rlwrap mosml -P full'
 
 # Misc
 alias gdb='gdb -n -x ~/.gdbinit'
+alias ack='ack-grep'
 
 function pdf() {
     evince $1 &

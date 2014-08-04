@@ -24,6 +24,7 @@ import Data.List(partition)
 import Data.Maybe(isNothing)
 import Data.Monoid(All(..))
 import Control.Monad(when)
+import XMonad.Hooks.FadeInactive
 
 
 -- Toggle 'global' windows
@@ -69,14 +70,6 @@ withSelectedWS callback inclEmpty conf = do
   case mbws of
     Just ws -> callback ws
     Nothing -> return ()
-
-isUnfocusedOnCurrentWS :: Query Bool
-isUnfocusedOnCurrentWS = do
-  w <- ask
-  ws <- liftX $ gets windowset
-  let thisWS = w `elem` W.index ws
-      unfocused = maybe True (w /=) $ W.peek ws
-  return $ thisWS && unfocused
 
 -- Includes empty window spaces if {True}
 gridselectWS :: Bool -> GSConfig WindowSpace -> X (Maybe WindowSpace)

@@ -9,21 +9,9 @@ setxkbmap -option terminate:ctrl_alt_bksp
 # Remaps some of the keys
 xmodmap ~/.xmodmap
 
-# Starts the dropbox script
-dropbox start &
-
-# Stop cd drive from ejecting
+# DONT EJECT THE FUCKING DRIVE
+# WHO EVEN USES CD/DVD THESE DAYS, FUCK
 eject -i 1
 
-# Start IM & IRC
-#(pidgin &; sleep 10)
-#(xchat &; sleep 10)
-
-# DONT EJECT
-eject -i 1
-
-# Starts xmonad
-xmonad
-
-
-
+# Start session
+startlxde

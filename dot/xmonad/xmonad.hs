@@ -5,17 +5,13 @@
 import XMonad
 import qualified Data.Map as M
 import qualified XMonad.StackSet as W
-import XMonad.Config.Gnome(gnomeConfig)
+import XMonad.Config.Desktop(desktopConfig)
 
 ----- Misc
-import Data.Monoid(mempty, mappend)
+import Data.Monoid(mempty)
 import Data.List((\\))
 import Data.Ratio((%))
 import Control.Monad(when, void)
-import Control.Concurrent(threadDelay)
-import System.Directory
-import System.Locale
-import System.Time
 import Text.Regex.PCRE((=~))
 
 ----- Own packages
@@ -28,7 +24,7 @@ import XMonad.Util.ScratchpadExtra
 import XMonad.Actions.CycleWS
 import XMonad.Actions.GridSelect
 import XMonad.Actions.TopicSpace
-import XMonad.Actions.WithAll
+import XMonad.Actions.WithAll (killAll)
 import XMonad.Actions.DynamicWorkspaces
 import XMonad.Actions.WindowGo (ifWindows)
 
@@ -38,7 +34,7 @@ import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.SetWMName
 import XMonad.Hooks.UrgencyHook
-import XMonad.Hooks.ICCCMFocus
+import XMonad.Hooks.ICCCMFocus (takeTopFocus)
 
 ----- Layout
 import XMonad.Layout.Grid
@@ -54,7 +50,7 @@ import XMonad.Prompt.Shell
 ----- Util
 import XMonad.Util.Run
 import XMonad.Util.EZConfig
-import XMonad.Util.Scratchpad
+import XMonad.Util.NamedScratchpad
 
 main :: IO ()
 main = do
@@ -62,29 +58,40 @@ main = do
   mapM_ spawn startup
   xmonad myConfig
 
+
+-- Only start these if they aren't running
 startupCond :: [(String, String)]
 startupCond = [ ("pidgin","Pidgin")
               --, ("optirun steam steam://open/console","Steam")
               ]
 
 startup :: [String]
-startup = ["xcompmgr", "dropbox.py start"]
+startup = ["xcompmgr", "dropbox start"]
 
-myConfig = withUrgencyHook LibNotifyUrgencyHook $ gnomeConfig
-   { manageHook         = manageHook gnomeConfig <+>
+myScratchFloat = (customFloating $ W.RationalRect (1/6) (1/6) (2/3) (2/3))
+
+scratchpads =
+    [ NS "htop" "xterm -e htop" (title =? "htop") myScratchFloat
+    , NS "term" "terminator -T sterm" (title =? "sterm") defaultFloating
+    , NS "ipy" "terminator -T ipy -e ipython" (title =? "ipy") defaultFloating
+    ]
+
+myConfig = withUrgencyHook LibNotifyUrgencyHook $ desktopConfig
+   { manageHook         = manageHook desktopConfig <+>
                           composeAll myManageHook <+>
-                          scratchpadManageHook (W.RationalRect 0.2 0.2 0.6 0.6)
+                          namedScratchpadManageHook scratchpads <+>
+                          manageDocks
    , layoutHook         = smartBorders $ setWorkspaceDirs myLayout
-   , terminal           = "terminator"
+   , terminal           = "exec terminator"
    , modMask            = mod4Mask
    , normalBorderColor  = "#555555"
    , focusedBorderColor = "#bbbbbb"
    , focusFollowsMouse  = False
-   , handleEventHook    = myEventHook
+   , handleEventHook    = myEventHook <+> docksEventHook
    , startupHook        = do return ()
                              checkKeymap myConfig myKeys
                              mapM_ (uncurry spawnUnlessExists) startupCond
-                             startupHook gnomeConfig
+                             startupHook desktopConfig
                              setWMName "LG3D"
    , logHook            = do fadeOutLogHook $ fadeIf isUnfocusedOnCurrentWS 0.8
                              takeTopFocus
@@ -100,17 +107,7 @@ myLayout = smartBorders . avoidStruts $
   --         onWorkspace "steam" (withIM (1%5) (Role "Friends") Grid) $
            Full ||| GridRatio (4/3) ||| Mirror (Tall 1 (3/100) (1/2))
 
-myEventHook = onRescreen customRescreen `mappend` deleteUnimportant (=~ "^(scratchpad|vm|monitor)-") callback
-  where callback dead = withDir $ \tag dir -> if (tag =~ "^scratchpad-" && dir =~ ("^" ++ myScratchpadDir)) then
-                                                io $ deleteIfEmpty dir
-                                              else
-                                                return ()
-        deleteIfEmpty dir = do contents <- getDirectoryContents dir
-                               if length (contents \\ [".", ".."]) == 0 then
-                                 removeDirectory dir
-                               else
-                                 return ()
-                            `catch` \e -> return ()
+myEventHook = onRescreen customRescreen
 
 customRescreen :: X ()
 customRescreen = do
@@ -161,6 +158,7 @@ myManageHook :: [ManageHook]
 myManageHook = [ className =? "Pidgin"     --> doShift "im"
                , className =? "Steam"      --> doShift "steam"
                , className =? "steam"      --> doShift "steam"
+               , className =? "xchat"      --> doShift "irc"
                , isFullscreen              --> doFullFloat
                , className =? "VirtualBox" --> do name <- title
                                                   case (name =~ "( \\(.*\\))?( \\[[^\\]]+\\])? - Oracle VM VirtualBox$") :: (String,String,String) of
@@ -169,6 +167,7 @@ myManageHook = [ className =? "Pidgin"     --> doShift "im"
                                                                    liftX $ addHiddenWorkspace ws
                                                                    doShift ws
                , resource =? "xfce4-notifyd" --> doIgnore <+> doF W.focusDown
+               , resource =? "lxpanel" --> doF W.focusDown
                ]
 
 myBrowser :: String
@@ -203,7 +202,8 @@ myTopicConfig = TopicConfig
   , topicActions = M.fromList
       [ ("web", browser [])
       , ("im", spawn "pidgin")
-      , ("irc", safeSpawn (terminal myConfig) ["-x", "ssh", "lolbox.pwnies.dk", "-t", "screen", "-U", "-dr", "irc"])
+      , ("irc", spawn "xchat")
+--      , ("irc", safeSpawn (terminal myConfig) ["-x", "ssh", "lolbox.pwnies.dk", "-t", "screen", "-U", "-dr", "irc"])
       , ("steam", spawn "optirun steam")
       , ("organise", appBrowser ["https://calendar.google.com"])
       , ("mail", appBrowser ["https://gmail.com"])
@@ -225,22 +225,16 @@ myKeys =
   [ ("M-z", goToSelectedWS myTopicConfig True myGSConfig)
   , ("M-<", toggleWS)
   , ("M-g", goToSelected myGSConfig)
-  , ("M-S-p", spawn "pkill gnome-panel || gnome-panel")
+  , ("M-S-p", spawn "pkill lxpanel || lxpanel")
   , ("M-p", shellPrompt myXPConfig)
   , ("M-b", browser [])
   , ("M-S-b", incogBrowser [])
-  --, ("M-l", spawn "i3lock")
   -- Dynamic workspaces
   , ("M-d", changeDir myXPConfig)
   , ("M-n", addWorkspacePrompt myXPConfig)
   , ("M-m", addWorkspaceMoveWindowPrompt myXPConfig)
   , ("M-<Backspace>", killAll >> myRemoveWorkspace)
   , ("M-r", renameWorkspace myXPConfig)
-  , ("M-s", do dir <- liftIO $ formatCalendarTime defaultTimeLocale (myScratchpadDir ++ "/%Y-%m-%d-%H:%M:%S")  `fmap` (getClockTime >>= toCalendarTime)
-               liftIO $ createDirectory dir
-               newScratchpad
-               changeDir_ dir
-               shell)
   -- Workspace navigation
   , ("M-a", shiftToSelectedWS True myGSConfig)
   , ("M-<Right>", nextScreen)
@@ -250,14 +244,16 @@ myKeys =
   -- Window swapping
   , ("M-S-h", windows W.swapDown)
   , ("M-S-l", windows W.swapUp)
-  -- Scratchpad
-  , ("M-S-<Space>", scratchpadSpawnActionCustom "gnome-terminal --disable-factory --name scratchpad")
+  -- Scratchpads
+  , ("M-S-<Space>", namedScratchpadAction scratchpads "term")
+  , ("M-S-C-t", namedScratchpadAction scratchpads "htop")
+  , ("M-C-<Space>", namedScratchpadAction scratchpads "ipy")
   -- Global window
   , ("M-S-g", toggleGlobal)
-  -- Notifications
-  , ("M-8", spawn "notify-send \"$(wireless_notify)\"")
-  , ("M-9", spawn "notify-send \"$(acpi)\"")
-  , ("M-0", spawn "notify-send \"$(date)\"")
+  -- Audio keys
+  , ("<XF86AudioRaiseVolume>", spawn "amixer set Master 5%+")
+  , ("<XF86AudioLowerVolume>", spawn "amixer set Master 5%-")
+  , ("<XF86AudioMute>", spawn "amixer sset Master toggle")
   ]
 
 -- Remove workspace unless it's a topic
@@ -268,16 +264,9 @@ myRemoveWorkspace = do
     W.StackSet {W.current = W.Screen { W.workspace = W.Workspace { W.tag = this } } } ->
       when (this `notElem` myTopics) removeWorkspace
 
-myScratchpadDir = "/home/kris/scratchpads"
-
---deleteEmptyScratchpad :: String -> X ()
---deleteEmptyScratchpad = do dir <- getCurrentDirectory
---                           contents <- getDirectoryContents dir
---                           safeSpawn "xmessage" [show contents]
-
 instance HasColorizer WindowSpace where
   defaultColorizer ws isFg =
     if nonEmptyWS ws || isFg
     then stringColorizer (W.tag ws) isFg
-         -- Empty workspaces get a dusty-sandy-ish colour
+        -- Empty workspaces get a dusty-sandy-ish colour
     else return ("#CAC3BA", "white")

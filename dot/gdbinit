@@ -1,14 +1,14 @@
-set disassembly-flavor intel
-set disable-randomization on
+#set disassembly-flavor intel
+#set disable-randomization on
 set pagination off
-set follow-fork-mode child
+set auto-load safe-path /
 
 set history filename ~/.gdbhistory
 set history save
 set history expansion
 
 
-set output-radix 0x10
-
-
-display/20i $eip
+#set output-radix 0x10
+#
+#
+#display/20i $pc
