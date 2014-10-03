@@ -185,8 +185,8 @@ set foldmethod=marker
 set foldclose=all
 "}}}
 " Swap files {{{
-set backupdir=/var/tmp/vim/swap
-set directory=/var/tmp/vim/swap
+set backupdir=~/.vim/swap
+set directory=~/.vim/undo
 " }}}
 "}}}
 " Colors {{{
@@ -321,14 +321,6 @@ let python_highlight_all = 1
 " CTAGS {{{
 set tags=./tags,./../tags,./../../tags,./../../../tags,tags
 " }}} 
-" haskell {{{
-" haskell-mode
-au BufEnter *.hs compiler ghc
-let g:haddock_browser="/usr/bin/lynx"
-let g:ghcmod_hlint_options=['']
-" ghc-mod
-" autocmd BufWritePost *.hs GhcModCheckAndLintAsync
-" }}}
 " }}}
 " icfp {{{
 au BufNewFile,BufReadPost *.asl set ft=ruby

@@ -58,7 +58,6 @@ main = do
   mapM_ spawn startup
   xmonad myConfig
 
-
 -- Only start these if they aren't running
 startupCond :: [(String, String)]
 startupCond = [ ("pidgin","Pidgin")
@@ -66,14 +65,14 @@ startupCond = [ ("pidgin","Pidgin")
               ]
 
 startup :: [String]
-startup = ["xcompmgr", "dropbox start"]
+startup = ["xcompmgr", "dropbox start", "xmodmap ~/.xmodmap"]
 
-myScratchFloat = (customFloating $ W.RationalRect (1/6) (1/6) (2/3) (2/3))
+myScratchFloat = (customFloating $ W.RationalRect (1/3) (1/3) (1/3) (1/3))
+myScratchPad = "gnome-terminal --disable-factory --title "
 
 scratchpads =
-    [ NS "htop" "xterm -e htop" (title =? "htop") myScratchFloat
-    , NS "term" "terminator -T sterm" (title =? "sterm") defaultFloating
-    , NS "ipy" "terminator -T ipy -e ipython" (title =? "ipy") defaultFloating
+    [ NS "scratch" (myScratchPad ++ "scratch")        (title =? "scratch") myScratchFloat
+    , NS "ipy"     (myScratchPad ++ "ipy -e ipython") (title =? "ipy")         myScratchFloat
     ]
 
 myConfig = withUrgencyHook LibNotifyUrgencyHook $ desktopConfig
@@ -105,7 +104,7 @@ myConfig = withUrgencyHook LibNotifyUrgencyHook $ desktopConfig
 myLayout = smartBorders . avoidStruts $
            onWorkspace "im"    (withIM (1%5) (Role "buddy_list") Grid) $
   --         onWorkspace "steam" (withIM (1%5) (Role "Friends") Grid) $
-           Full ||| GridRatio (4/3) ||| Mirror (Tall 1 (3/100) (1/2))
+           GridRatio (4/3) ||| Full
 
 myEventHook = onRescreen customRescreen
 
@@ -155,17 +154,19 @@ setWorkspaceDirs layout =
   where add ws dir = onWorkspace ws (workspaceDir dir layout)
 
 myManageHook :: [ManageHook]
-myManageHook = [ className =? "Pidgin"     --> doShift "im"
-               , className =? "Steam"      --> doShift "steam"
-               , className =? "steam"      --> doShift "steam"
-               , className =? "xchat"      --> doShift "irc"
-               , isFullscreen              --> doFullFloat
-               , className =? "VirtualBox" --> do name <- title
-                                                  case (name =~ "( \\(.*\\))?( \\[[^\\]]+\\])? - Oracle VM VirtualBox$") :: (String,String,String) of
-                                                    (_,"",_) -> return mempty
-                                                    (n,_,_)  -> do let ws = "vm-" ++ n
-                                                                   liftX $ addHiddenWorkspace ws
-                                                                   doShift ws
+myManageHook = [ className =? "Pidgin"       --> doShift "im"
+               , className =? "Steam"        --> doShift "steam"
+               , className =? "steam"        --> doShift "steam"
+               , className =? "xchat"        --> doShift "irc"
+               , isFullscreen                --> doFullFloat
+               , className =? "VirtualBox"   --> do name <- title
+                                                    case (name =~ "( \\(.*\\))?( \\[[^\\]]+\\])? - Oracle VM VirtualBox$") :: (String,String,String) of
+                                                      (_,"",_) -> return mempty
+                                                      (n,_,_)  -> do let ws = "vm-" ++ n
+                                                                     liftX $ addHiddenWorkspace ws
+                                                                     doShift ws
+                -- desktop environment specific stuff
+               , resource =? "xfce4-settings-manager" --> doFloat
                , resource =? "xfce4-notifyd" --> doIgnore <+> doF W.focusDown
                , resource =? "lxpanel" --> doF W.focusDown
                ]
@@ -204,11 +205,10 @@ myTopicConfig = TopicConfig
       , ("im", spawn "pidgin")
       , ("irc", spawn "xchat")
 --      , ("irc", safeSpawn (terminal myConfig) ["-x", "ssh", "lolbox.pwnies.dk", "-t", "screen", "-U", "-dr", "irc"])
-      , ("steam", spawn "optirun steam")
+      , ("steam", spawn "steam")
       , ("organise", appBrowser ["https://calendar.google.com"])
       , ("mail", appBrowser ["https://gmail.com"])
       , ("virtualbox", spawn "virtualbox")
-      , ("music", spawn "vlc ~/musik/EuroDance.pls")
       , ("xmonad", shell)
       , ("wireshark", spawn "wireshark")
       , ("ida", spawn "ida 1600x900")
@@ -245,8 +245,7 @@ myKeys =
   , ("M-S-h", windows W.swapDown)
   , ("M-S-l", windows W.swapUp)
   -- Scratchpads
-  , ("M-S-<Space>", namedScratchpadAction scratchpads "term")
-  , ("M-S-C-t", namedScratchpadAction scratchpads "htop")
+  , ("M-S-<Space>", namedScratchpadAction scratchpads "scratch")
   , ("M-C-<Space>", namedScratchpadAction scratchpads "ipy")
   -- Global window
   , ("M-S-g", toggleGlobal)

@@ -1,17 +1,1 @@
-# xset settings
-xsetroot -cursor_name left_ptr
-xsetroot -solid black
-xset b off
-
-# Enables the ctrl+alt+backspace shortcut to kill X
-setxkbmap -option terminate:ctrl_alt_bksp
-
-# Remaps some of the keys
-xmodmap ~/.xmodmap
-
-# DONT EJECT THE FUCKING DRIVE
-# WHO EVEN USES CD/DVD THESE DAYS, FUCK
-eject -i 1
-
-# Start session
-startlxde
+xinput --set-prop 11 "Device Accel Constant Deceleration" 3
