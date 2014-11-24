@@ -66,7 +66,7 @@ startupCond = [ ("pidgin","Pidgin")
               ]
 
 startup :: [String]
-startup = ["xcompmgr", "dropbox start"]
+startup = []
 
 myScratchFloat = (customFloating $ W.RationalRect (1/6) (1/6) (2/3) (2/3))
 
@@ -95,7 +95,7 @@ myConfig = withUrgencyHook LibNotifyUrgencyHook $ desktopConfig
                              setWMName "LG3D"
    , logHook            = do fadeOutLogHook $ fadeIf isUnfocusedOnCurrentWS 0.8
                              takeTopFocus
-   , borderWidth        = 0
+   , borderWidth        = 1
    , workspaces         = myTopics
    }
    `removeKeysP` (["M-" ++ m ++ k | m <- ["", "S-"], k <- map show [1..9 :: Int]])
